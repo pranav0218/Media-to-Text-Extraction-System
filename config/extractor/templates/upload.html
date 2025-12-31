@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <!-- Upload Card -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">Upload Media File</h4>
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.file }}
+                    <button type="submit" class="btn btn-primary mt-3">
+                        🚀 Extract Text
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Extracted Text -->
+        {% if text %}
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5>Extracted Text</h5>
+                <pre class="bg-light p-3 rounded">{{ text }}</pre>
+
+                <!-- Download Button -->
+                <form method="post" action="{% url 'download_text' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="text" value="{{ text }}">
+                    <button type="submit" class="btn btn-success mt-2">
+                        ⬇ Download Transcript
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- AI Summary -->
+        {% if summary %}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5>AI Summary</h5>
+                <pre class="bg-light p-3 rounded">{{ summary }}</pre>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
